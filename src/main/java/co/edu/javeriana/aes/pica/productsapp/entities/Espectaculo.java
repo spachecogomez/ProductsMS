@@ -5,6 +5,7 @@
  */
 package co.edu.javeriana.aes.pica.productsapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Tarifa_Espectaculo",schema = "Sales")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Espectaculo {
     
     @Id
