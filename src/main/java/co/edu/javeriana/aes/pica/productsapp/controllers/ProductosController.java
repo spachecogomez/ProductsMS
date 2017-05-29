@@ -36,13 +36,23 @@ public class ProductosController {
         return productRepository.findOne(productCode);
     }
 
+//    @RequestMapping(method = RequestMethod.GET, path = "/products/mainPage")
+//    public List<Product> getProductsStart(@RequestParam int start,@RequestParam int pageSize) {
+//        log.debug(String.format("Searching producto by product in page %d ", start));
+//        return productRepository.findAll(new PageRequest(start, pageSize)).getContent();
+//    }
     @RequestMapping(method = RequestMethod.GET, path = "/products/byespectaclename")
-    public QueryResponse getProdyctsByEspectaculoName(@RequestParam String nombre, @RequestParam int start,@RequestParam int pageSize) {
-        String nombreQuery = "%".concat(nombre.toUpperCase()).concat("%");
-        log.debug(String.format("Searching producto by espectaculo nombre with param %s ", nombreQuery));
+    public QueryResponse getProdyctsByEspectaculoName(@RequestParam(required = false) String nombre, @RequestParam int start, @RequestParam int pageSize) {
         QueryResponse response = new QueryResponse();
-        response.setSize(productRepository.countByCriteria(nombreQuery));
-        response.setResults(productRepository.queryEspectaculos(nombreQuery, new PageRequest(start, pageSize)));
+        if (nombre != null && nombre.trim().length() > 0) {
+            String nombreQuery = "%".concat(nombre.toUpperCase()).concat("%");
+            log.debug(String.format("Searching producto by espectaculo nombre with param %s ", nombreQuery));
+            response.setSize(productRepository.countByCriteria(nombreQuery));
+            response.setResults(productRepository.queryEspectaculos(nombreQuery, new PageRequest(start, pageSize)));
+        } else {
+            response.setSize(productRepository.count());
+            response.setResults(productRepository.findAll(new PageRequest(start, pageSize)).getContent());
+        }
         return response;
     }
 
