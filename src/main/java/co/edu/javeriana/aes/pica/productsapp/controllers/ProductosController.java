@@ -6,6 +6,7 @@
 package co.edu.javeriana.aes.pica.productsapp.controllers;
 
 import co.edu.javeriana.aes.pica.productsapp.entities.Product;
+import co.edu.javeriana.aes.pica.productsapp.model.QueryResponse;
 import co.edu.javeriana.aes.pica.productsapp.repositories.ProductRepository;
 import java.util.List;
 import org.slf4j.Logger;
@@ -36,10 +37,13 @@ public class ProductosController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/products/byespectaclename")
-    public List<Product> getProdyctsByEspectaculoName(@RequestParam String nombre, @RequestParam int start,@RequestParam int pageSize) {
+    public QueryResponse getProdyctsByEspectaculoName(@RequestParam String nombre, @RequestParam int start,@RequestParam int pageSize) {
         String nombreQuery = "%".concat(nombre.toUpperCase()).concat("%");
         log.debug(String.format("Searching producto by espectaculo nombre with param %s ", nombreQuery));
-        return productRepository.queryEspectaculos(nombreQuery, new PageRequest(start, pageSize));
+        QueryResponse response = new QueryResponse();
+        response.setSize(productRepository.countByCriteria(nombreQuery));
+        response.setResults(productRepository.queryEspectaculos(nombreQuery, new PageRequest(start, pageSize)));
+        return response;
     }
 
 }

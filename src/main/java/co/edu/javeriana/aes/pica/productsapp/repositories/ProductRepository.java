@@ -18,7 +18,10 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>{
     
-    @Query("SELECT p FROM Product p INNER JOIN p.espectaculo e WHERE UPPER(e.nombre) LIKE :nombre ")
+    @Query("SELECT p FROM Product p INNER JOIN p.espectaculo e INNER JOIN p.estadia est WHERE UPPER(e.nombre) LIKE :nombre ")
     List<Product> queryEspectaculos(@Param("nombre")String nombreQuery,Pageable page);
+    
+    @Query("SELECT count(p) FROM Product p INNER JOIN p.espectaculo e INNER JOIN p.estadia est WHERE UPPER(e.nombre) LIKE :nombre ")
+    Long countByCriteria(@Param("nombre")String nombreQuery);
     
 }

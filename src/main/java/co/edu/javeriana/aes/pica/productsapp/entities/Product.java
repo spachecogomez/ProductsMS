@@ -40,9 +40,17 @@ public class Product {
     @Column(name = "ciudad_espectaculo")
     private String ciudad;
     
-    @ManyToOne(fetch = FetchType.LAZY ,targetEntity = Espectaculo.class)
+    @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Espectaculo.class)
     @JoinColumn(name = "espectaculo", referencedColumnName = "id_tespectaculo")
     private Espectaculo espectaculo;
+    
+    @ManyToOne(fetch = FetchType.LAZY ,targetEntity = Estadia.class)
+    @JoinColumn(name = "estadia", referencedColumnName = "id_testadia")
+    private Estadia estadia;
+    
+    @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Transporte.class)
+    @JoinColumn(name = "transporte", referencedColumnName = "id_ttransporte")
+    private Transporte transporte;
 
     public Integer getProdID() {
         return prodID;
@@ -103,7 +111,33 @@ public class Product {
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
-    
-    
+
+    /**
+     * @return the estadia
+     */
+    public Estadia getEstadia() {
+        return estadia;
+    }
+
+    /**
+     * @param estadia the estadia to set
+     */
+    public void setEstadia(Estadia estadia) {
+        this.estadia = estadia;
+    }
+
+    /**
+     * @return the transporte
+     */
+    public Transporte getTransporte() {
+        return transporte;
+    }
+
+    /**
+     * @param transporte the transporte to set
+     */
+    public void setTransporte(Transporte transporte) {
+        this.transporte = transporte;
+    }
     
 }
